@@ -34,6 +34,9 @@ def translate(string, lang_direction):
 
     else:
         
+        # The format specifiers ("... %(name)s ... ") might get translated into
+        # the target language, they should not. So replace them with some text
+        # that is highly unlikely to be translated
         matches = set(matches)
         match_replace = [(x, '__MTCH%04d__' % i) for i, x in enumerate(matches)]
 
