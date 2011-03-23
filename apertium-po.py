@@ -33,27 +33,22 @@ def translate(string, lang_direction):
         new = translate_subpart(string, lang_direction)
 
     else:
+        
+        matches = set(matches)
+        match_replace = [(x, '__MTCH%04d__' % i) for i, x in enumerate(matches)]
 
-        # we need to do complicate translation of the bits inside
-        full_trans = translate_subpart(string, lang_direction)
+        intermediate_string = string
 
-        for match in matches:
-            # then, for each format specifier, replace back in the string
+        for old, new in match_replace:
+            intermediate_string = intermediate_string.replace(old, new)
 
-            translated_match = translate_subpart(match, lang_direction)
-
-            # during the translation some extra punctuation/spaces might have been added
-            # remove them
-            translated_match_match = named_format_regex.search(translated_match)
-            assert translated_match_match
-            translated_match = translated_match_match.group(0)
-
-            # put back the format specifier, the case of the format specifier might have changed
-            replace = re.compile(re.escape(translated_match), re.IGNORECASE)
-            full_trans = replace.sub(match, full_trans)
+        translated_string = translate_subpart(intermediate_string, lang_direction)
 
         
-        new = full_trans
+        for old, new in match_replace:
+            translated_string = translated_string.replace(new, old)
+
+        new = translated_string
 
     return new
 
