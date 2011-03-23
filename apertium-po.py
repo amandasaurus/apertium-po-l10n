@@ -28,7 +28,7 @@ def translate(string, lang_direction):
         # There are no format specifiers in this string, so just do a straight translation
 
         # this fails if we've missed a format specifier
-        assert "%(" not in string, string
+        assert "%(" not in string, "This code has a bug and has missed a format specifier in this string: "+repr(string)
 
         new = translate_subpart(string, lang_direction)
 
