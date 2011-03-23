@@ -52,6 +52,11 @@ def translate(string, lang_direction):
             translated_string = translated_string.replace(new, old)
 
         new = translated_string
+    
+    # sometimes the start string "\n", might have gotten changed to ". \n"
+    # compilemessages doesn't like this, so strip them out
+    while string.startswith("\n") and len(new) > 0 and new.startswith(". \n"):
+        new = new[2:]
 
     return new
 
